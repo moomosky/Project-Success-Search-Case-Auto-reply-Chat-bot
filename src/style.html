@@ -1,0 +1,175 @@
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Lexend+Deca&family=Fredoka:wght@400;600&display=swap');
+
+* {
+    font-family: 'Fredoka', 'Lexend Deca', sans-serif;
+}
+
+.navbar{
+  background-color: black;
+    height: 80px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    color: white;
+    font-weight: 500;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #ffdde1, #ee9ca7, #a1c4fd, #c2e9fb);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
+}
+
+@keyframes gradientBG {
+    0% {background-position: 0% 50%;}
+    50% {background-position: 100% 50%;}
+    100% {background-position: 0% 50%;}
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1em;
+}
+
+#message-container {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8em;
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 450px;
+    width: 85vw;
+    max-width: 750px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.bubble {
+    border-radius: 20px;
+    padding: 12px 16px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {opacity: 0; transform: translateY(10px);}
+    to {opacity: 1; transform: translateY(0);}
+}
+
+.received-text {
+    justify-content: flex-start;
+    background-color: #ffe3e3;
+    color: #333;
+    border-top-left-radius: 5px;
+}
+
+.sent-text {
+    justify-content: flex-end;
+    background-color: #d8f3dc;
+    color: #333;
+}
+
+.msg-div {
+    max-width: 500px;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+    background-color: transparent;
+    border: 0;
+}
+
+.time-container {
+    color: #666;
+    text-align: right;
+    font-size: 10px;
+    margin-top: 3px;
+}
+
+.username-bubble {
+    color: #ff6fb5;
+    width: 100%;
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 3px;
+}
+
+.date-bubble {
+    border-radius: 10px;
+    padding: 6px 12px;
+    font-size: 14px;
+    margin: auto;
+    background-color: #fff0f6;
+    color: #c9184a;
+    font-weight: 500;
+}
+
+.bottom-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 85vw;
+    max-width: 750px;
+    margin-top: 12px;
+    padding: 10px;
+    border-radius: 15px;
+    background: white;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+#input-container {
+    font-size: 16px;
+    width: 90%;
+    border: none;
+    padding: 10px;
+    border-radius: 12px;
+    background: #f8f9fa;
+    resize: none;
+}
+
+#input-container:focus {
+    outline: 2px solid #ff85a2;
+}
+
+button {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+}
+
+#sendbtn {
+    font-size: 22px;
+    height: 45px;
+    width: 45px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #ff85a2, #ffb5e8);
+    color: white;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    transition: transform 0.2s ease;
+}
+
+#sendbtn:hover {
+    transform: scale(1.1);
+}
+
+@media screen and (max-width:520px) {
+    #message-container { height: 350px; }
+    #sendbtn { height: 40px; width: 40px; font-size: 20px; }
+}
+</style>

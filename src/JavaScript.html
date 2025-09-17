@@ -1,0 +1,66 @@
+<script>
+  const messageContainer = document.querySelector("#message-container");
+  const userInputBox = document.querySelector("#input-container");
+  const sendButton = document.querySelector("#sendbtn");
+  const REFRESH_RATE = 1000; // ms
+
+  let MY_USERNAME = prompt("กรุณากรอกชื่อของคุณ",);
+  if (!MY_USERNAME) MY_USERNAME = "Anonymous";
+
+  let currentRowIndex = -1;
+
+  function addMessage(text, sentText) {
+    let row = document.createElement("div");
+    row.className = sentText ? "row sent-row" : "row received-row";
+
+    let bubble = document.createElement("div");
+    bubble.className = sentText ? "bubble sent-text" : "bubble received-text";
+    bubble.textContent = text;
+
+    row.appendChild(bubble);
+    messageContainer.appendChild(row);
+    messageContainer.scrollTop = messageContainer.scrollHeight;
+  }
+
+function updateMessages() {
+  google.script.run.withSuccessHandler((data) => {
+    for (let i = currentRowIndex + 1; i < data.length; i++) {
+      const user = data[i][1];
+      const msg = data[i][2];
+
+      // แสดงข้อความในกล่องแชท
+      addMessage(`${user}: ${msg}`, user === MY_USERNAME);
+    }
+    currentRowIndex = data.length - 1;
+  }).getSpreadsheetData();
+}
+
+  function saveToSpreadsheet() {
+    if (userInputBox.value.trim() == "") return;
+    google.script.run.addNewRowToSheet(MY_USERNAME, userInputBox.value);
+    userInputBox.value = "";
+  }
+
+  sendButton.addEventListener("click", saveToSpreadsheet);
+  updateMessages();
+  setInterval(updateMessages, REFRESH_RATE);
+
+  // ถ้าเป็น ADMIN จะเห็นปุ่ม
+if (MY_USERNAME === "ADMIN") {
+  document.getElementById("admin-controls").style.display = "block";
+
+  // โหลดสถานะบอทตอนเปิดเว็บ
+  google.script.run.withSuccessHandler((isOn) => {
+    document.getElementById("botToggle").checked = isOn;
+    document.getElementById("botToggleLabel").innerText = "🤖: " + (isOn ? "✅" : "❌");
+  }).getBotStatusForClient();
+
+  // เวลา ADMIN กดปุ่มสวิตช์
+  document.getElementById("botToggle").addEventListener("change", (e) => {
+    const isOn = e.target.checked;
+    google.script.run.withSuccessHandler((newVal) => {
+      document.getElementById("botToggleLabel").innerText = "🤖: " + (newVal ? "✅" : "❌");
+    }).setBotStatusByAdmin(MY_USERNAME, isOn);
+  });
+}
+</script>
